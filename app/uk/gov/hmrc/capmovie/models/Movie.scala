@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.capmovie
+package uk.gov.hmrc.capmovie.models
 
-package object controllers {
+import play.api.libs.json.{Json, OFormat}
 
+case class Movie(id: String,
+                 plot: String,
+                 genres: List[String],
+                 rated: String,
+                 cast: List[String],
+                 poster: String,
+                 title: String)
+
+object Movie {
+  implicit val format: OFormat[Movie] = Json.format[Movie]
 }
