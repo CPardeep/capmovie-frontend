@@ -7,4 +7,6 @@ GET        /assets/*file                    controllers.Assets.versioned(path = 
 
 GET        /home                            uk.gov.hmrc.capmovie.controllers.HomeController.homePage
 
+GET        /start                           uk.gov.hmrc.capmovie.controllers.HomeController.startPage
+
 GET        /movie/:id                       uk.gov.hmrc.capmovie.controllers.ViewOneController.viewOnePage(id: String)

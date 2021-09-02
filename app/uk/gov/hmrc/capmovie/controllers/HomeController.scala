@@ -18,19 +18,29 @@ package uk.gov.hmrc.capmovie.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.capmovie.connectors.MovieConnector
-import uk.gov.hmrc.capmovie.views.html.HomePage
+import uk.gov.hmrc.capmovie.controllers.predicates.CheckUser
+import uk.gov.hmrc.capmovie.views.html.{HomePage, StartPage}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class HomeController @Inject()(mcc: MessagesControllerComponents,
                                home: HomePage,
-                               connector: MovieConnector
-                              )
+                               start: StartPage,
+                               check: CheckUser,
+                               connector: MovieConnector)
   extends FrontendController(mcc) {
 
-  def homePage: Action[AnyContent] = Action.async { implicit request =>
-    connector.readAll().map(x => Ok(home(x)))
+  def homePage: Action[AnyContent] = Action async { implicit request =>
+    check.check {
+      case a if a.contains("ADMIN") => connector.readAll().map(x => Ok(home(x, "admin")))
+      case a if a.contains("USER") => connector.readAll().map(x => Ok(home(x, "user")))
+      case _ => connector.readAll().map(x => Ok(home(x, "")))
+    }
+  }
+
+  def startPage: Action[AnyContent] = Action async { implicit request =>
+    Future.successful(Ok(start()))
   }
 }
