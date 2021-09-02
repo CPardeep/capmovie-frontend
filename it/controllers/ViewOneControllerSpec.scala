@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.capmovie.controllers
+package controllers
 
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -25,16 +26,17 @@ import play.api.http.Status.OK
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import uk.gov.hmrc.capmovie.connectors.MovieConnector
+import uk.gov.hmrc.capmovie.controllers.ViewOneController
 import uk.gov.hmrc.capmovie.models.Movie
-import uk.gov.hmrc.capmovie.views.html.HomePage
+import uk.gov.hmrc.capmovie.views.html.MoviePage
 
 import scala.concurrent.Future
 
-class HomeControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite{
+class ViewOneControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
 
-  val home: HomePage = app.injector.instanceOf[HomePage]
+  val view: MoviePage = app.injector.instanceOf[MoviePage]
   val connector: MovieConnector = mock[MovieConnector]
-  val controller = new HomeController(Helpers.stubMessagesControllerComponents(), home, connector)
+  val controller = new ViewOneController(Helpers.stubMessagesControllerComponents(), view, connector)
 
   val movie: Movie = Movie(
     id = "TESTMOV",
@@ -49,11 +51,13 @@ class HomeControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
     poster = "testURL",
     title = "testTitle")
 
-  "homePage" should {
-    "load movieList" in {
-      when(connector.readAll()) thenReturn Future.successful(List(movie))
-      val result = controller.homePage(FakeRequest("GET", "/"))
+  "viewOnePage" should {
+    "load a movie" in {
+      when(connector.readOne(any()))
+        .thenReturn(Future.successful(Some(movie)))
+      val result = controller.viewOnePage(movie.id).apply(FakeRequest("GET", "/"))
       status(result) shouldBe OK
     }
   }
+
 }

@@ -1,8 +1,8 @@
 @import uk.gov.hmrc.capmovie.models.Movie
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @this(layout: Layout, govukInput : GovukInput, govukErrorSummary : GovukErrorSummary)
-@(movieList: List[Movie] )(implicit request: Request[_], messages: Messages)
-@layout(pageTitle = Some("Home Page")) {
+@(movieList: List[Movie], user: String )(implicit request: Request[_], messages: Messages)
+@layout(pageTitle = Some("Home Page"), userType = user) {
 <div id="movie-container">
     @for((movie, index) <- movieList.zipWithIndex){
     <div class="movie-card">
