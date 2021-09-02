@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.capmovie.connectors
 
-import play.api.libs.json.JsArray
+import play.api.libs.json.{JsArray, JsError, JsSuccess}
 import play.api.libs.ws.WSClient
 import play.api.mvc.{AbstractController, ControllerComponents}
 import uk.gov.hmrc.capmovie.models.Movie
@@ -44,5 +44,18 @@ class MovieConnector @Inject()(ws: WSClient, cc: ControllerComponents)
           case _ => List()
         }
     }.recover { case _ => List() }
+  }
+
+  def readOne(id: String): Future[Option[Movie]] = {
+    ws.url("http://localhost:9009/movie/" + id).get().map { response =>
+      response.status match {
+        case 200 => response.json.validate[Movie] match {
+          case JsSuccess(movie, _) => Some(movie)
+          case JsError(_) => None
+        }
+        case _ => None
+      }
+
+    }
   }
 }

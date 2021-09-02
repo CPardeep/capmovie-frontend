@@ -69,4 +69,21 @@ class MovieConnectorISpec extends AnyWordSpec with Matchers with GuiceOneServerP
       await(result) shouldBe List()
     }
   }
+  "readOne" should {
+    "return a movie" in {
+      stubGet(s"/movie/${movie.id}", 200, Json.toJson(movie).toString())
+      val result = connector.readOne(movie.id)
+      await(result) shouldBe Some(movie)
+    }
+    "return None" in {
+      stubGet(s"/movie/${movie.id}", 200, Json.toJson("{}").toString())
+      val result = connector.readOne(movie.id)
+      await(result) shouldBe None
+    }
+    "throw an exception" in {
+      stubGet(s"/movie/${movie.id}", 404, Json.toJson("{}").toString())
+      val result = await(connector.readOne(movie.id))
+      result shouldBe None
+    }
+  }
 }

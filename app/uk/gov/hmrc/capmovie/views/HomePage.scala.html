@@ -4,10 +4,10 @@
 @(movieList: List[Movie] )(implicit request: Request[_], messages: Messages)
 @layout(pageTitle = Some("Home Page")) {
 <div id="movie-container">
-    @for(movie <- movieList){
+    @for((movie, index) <- movieList.zipWithIndex){
     <div class="movie-card">
-        <p> @movie.title</p>
-        <img width="150" height="250" src=@movie.poster/>
+        <p><a id="movie[@index]" class="movie-link" href="http://localhost:9001/capmovie/movie/@movie.id">@movie.title</a></p>
+        <img width=150 height=250 src="@movie.poster"/>
     </div>
     }
 </div>
