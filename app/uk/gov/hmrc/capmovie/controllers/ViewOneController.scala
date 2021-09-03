@@ -18,21 +18,26 @@ package uk.gov.hmrc.capmovie.controllers
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.capmovie.connectors.MovieConnector
+import uk.gov.hmrc.capmovie.controllers.predicates.CheckUser
 import uk.gov.hmrc.capmovie.views.html.MoviePage
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class ViewOneController @Inject()(mcc: MessagesControllerComponents,
                                   moviePage: MoviePage,
+                                  check: CheckUser,
                                   connector: MovieConnector
                                  )
   extends FrontendController(mcc) {
 
-  def viewOnePage(id: String): Action[AnyContent] = Action.async { implicit request =>
-    connector.readOne(id).map{ movie =>
-      Ok(moviePage(movie.get))
+  def viewOnePage(id: String): Action[AnyContent] = Action async { implicit request =>
+      check.check {
+        case a if a.contains("ADMIN") => connector.readOne(id).map( movie => Ok(moviePage(movie.get, "admin")))
+        case a if a.contains("USER") => connector.readOne(id).map( movie =>Ok(moviePage(movie.get, "user")))
+        case _ => connector.readOne(id).map( movie =>Ok(moviePage(movie.get, "")))
+      }
     }
-  }
 }
