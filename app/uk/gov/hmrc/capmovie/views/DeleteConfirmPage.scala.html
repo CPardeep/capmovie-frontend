@@ -1,0 +1,10 @@
+@import uk.gov.hmrc.capmovie.models.Movie
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@this(layout: Layout, govukInput : GovukInput, govukErrorSummary : GovukErrorSummary)
+@(user: String)(implicit request: Request[_], messages: Messages)
+@layout(pageTitle = Some("Delete Successful"), userType = user) {
+<p>Delete was successful</p>
+<form action="http://localhost:9001/capmovie/home">
+    <button id="confirm" class="govuk-button" data-module="govuk-button">Confirm</button>
+</form>
+}

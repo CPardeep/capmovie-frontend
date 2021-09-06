@@ -27,7 +27,13 @@
             }
         </p>
         @if(user == "admin") {
-            <p>delete goes here</p>
+        <form action="http://localhost:9001/capmovie/delete/@movie.id">
+            <button id="delete" class="govuk-button" data-module="govuk-button">Delete</button>
+        </form>
+        <form action="http://localhost:9001/capmovie/@movie.id/update-title">
+            <button id="update" class="govuk-button" data-module="govuk-button">Update</button>
+        </form>
+
         }
     </div>
 </div>

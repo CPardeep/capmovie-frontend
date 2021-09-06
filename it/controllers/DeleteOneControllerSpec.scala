@@ -22,23 +22,29 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.http.Status.OK
+import play.api.http.Status.{OK, SEE_OTHER}
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
 import play.api.test.{FakeRequest, Helpers}
 import uk.gov.hmrc.capmovie.connectors.MovieConnector
-import uk.gov.hmrc.capmovie.controllers.ViewOneController
+import uk.gov.hmrc.capmovie.controllers.DeleteController
 import uk.gov.hmrc.capmovie.controllers.predicates.CheckUser
 import uk.gov.hmrc.capmovie.models.Movie
-import uk.gov.hmrc.capmovie.views.html.MoviePage
+import uk.gov.hmrc.capmovie.views.html.{DeleteAreYouSurePage, DeleteConfirmPage}
 
 import scala.concurrent.Future
 
-class ViewOneControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
+class DeleteOneControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
 
-  val view: MoviePage = app.injector.instanceOf[MoviePage]
-  val connector: MovieConnector = mock[MovieConnector]
+  val deleteAreYouSure = app.injector.instanceOf[DeleteAreYouSurePage]
+  val deleteConfirm = app.injector.instanceOf[DeleteConfirmPage]
   val check: CheckUser = app.injector.instanceOf[CheckUser]
-  val controller = new ViewOneController(Helpers.stubMessagesControllerComponents(), view, check, connector)
+  val connector: MovieConnector = mock[MovieConnector]
+  val controller = new DeleteController(
+    Helpers.stubMessagesControllerComponents,
+    deleteAreYouSure,
+    deleteConfirm,
+    connector,
+    check)
   val movie: Movie = Movie(
     id = "TESTMOV",
     plot = "Test plot",
@@ -51,13 +57,26 @@ class ViewOneControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
       "TestPerson"),
     poster = "testURL",
     title = "testTitle")
-
-  "viewOnePage" should {
-    "load a movie" in {
+  "deleteAreYouSure" should {
+    "load a page" in {
       when(connector.readOne(any()))
         .thenReturn(Future.successful(Some(movie)))
-      val result = controller.viewOnePage(movie.id).apply(FakeRequest("GET", "/"))
+      val result = controller.deleteAreYouSure(movie.id).apply(FakeRequest("GET", "/").withSession("adminId" -> "ADMIN"))
       status(result) shouldBe OK
+    }
+  }
+  "deleteConfirmation" should {
+    "load a page if movie deleted successfully" in {
+      when(connector.delete(any()))
+        .thenReturn(Future.successful(true))
+      val result = controller.deleteConfirmation(movie.id).apply(FakeRequest("GET", "/").withSession("adminId" -> "ADMIN"))
+      status(result) shouldBe OK
+    }
+    "redirect to homepage if movie not deleted" in {
+      when(connector.delete(any()))
+        .thenReturn(Future.successful(false))
+      val result = controller.deleteConfirmation(movie.id).apply(FakeRequest("GET", "/").withSession("adminId" -> "ADMIN"))
+      status(result) shouldBe SEE_OTHER
     }
   }
 

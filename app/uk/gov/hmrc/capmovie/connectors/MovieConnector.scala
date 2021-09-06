@@ -58,4 +58,12 @@ class MovieConnector @Inject()(ws: WSClient, cc: ControllerComponents)
 
     }
   }
+  def delete(id: String): Future[Boolean] = {
+    ws.url("http://localhost:9009/delete/" + id).delete().map { response =>
+      response.status match {
+        case 204 => true
+        case 404 => false
+      }
+    }
+  }
 }

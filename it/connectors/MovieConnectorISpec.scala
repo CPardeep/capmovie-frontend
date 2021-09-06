@@ -20,6 +20,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
+import play.api.http.Status.{NOT_FOUND, NO_CONTENT}
 import play.api.libs.json.Json
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.capmovie.connectors.MovieConnector
@@ -84,6 +85,24 @@ class MovieConnectorISpec extends AnyWordSpec with Matchers with GuiceOneServerP
       stubGet(s"/movie/${movie.id}", 404, Json.toJson("{}").toString())
       val result = await(connector.readOne(movie.id))
       result shouldBe None
+    }
+  }
+  "delete" should {
+    "return true" in {
+      stubDelete(
+        url = s"/delete/${movie.id}",
+        status = 204,
+        responseBody = "")
+      val result = await(connector.delete(movie.id))
+      result shouldBe true
+    }
+    "return false" in {
+      stubDelete(
+        url = s"/delete/${movie.id}",
+        status = 404,
+        responseBody = "")
+      val result = await(connector.delete(movie.id))
+      result shouldBe false
     }
   }
 }
