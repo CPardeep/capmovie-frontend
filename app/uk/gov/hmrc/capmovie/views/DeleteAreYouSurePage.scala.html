@@ -3,9 +3,15 @@
 @this(layout: Layout, govukInput : GovukInput, govukErrorSummary : GovukErrorSummary)
 @(movie: Movie, user: String)(implicit request: Request[_], messages: Messages)
 @layout(pageTitle = Some(movie.title + " Delete"), userType = user) {
-<p>Are you sure you want to delete @movie.title</p>
-<a href="http://localhost:9001/capmovie/movie/@movie.id">Cancel and return</a>
+<p class="govuk-heading-xl">Delete @movie.title</p>
+<p class="govuk-hint">Deleting @movie.title will permanently remove it from the website, this action cannot be undone</p>
+<div>
+    <a class="govuk-link" data-module="govuk-button" href="http://localhost:9001/capmovie/movie/@movie.id">
+        Cancel and return
+    </a>
+</div>
+<br>
 <form action="http://localhost:9001/capmovie/delete/confirmed/@movie.id">
-    <button id="confirm" class="govuk-button" data-module="govuk-button">Delete</button>
+    <button id="confirm" class="govuk-button govuk-button--warning" data-module="govuk-button">Delete Movie</button>
 </form>
 }
