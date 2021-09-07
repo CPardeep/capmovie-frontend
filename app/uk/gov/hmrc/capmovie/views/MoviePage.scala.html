@@ -1,8 +1,8 @@
 @import uk.gov.hmrc.capmovie.models.Movie
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @this(layout: Layout, govukInput : GovukInput, govukErrorSummary : GovukErrorSummary)
-@(movie: Movie )(implicit request: Request[_], messages: Messages)
-@layout(pageTitle = Some(movie.title)) {
+@(movie: Movie, user: String)(implicit request: Request[_], messages: Messages)
+@layout(pageTitle = Some(movie.title), userType = user) {
 <div id="movie-container">
     <div class="movie-card">
         <p id="title">@movie.title</p>
@@ -26,6 +26,15 @@
                 <p>@genre<p>
             }
         </p>
+        @if(user == "admin") {
+        <form action="http://localhost:9001/capmovie/delete/@movie.id">
+            <button id="delete" class="govuk-button" data-module="govuk-button">Delete</button>
+        </form>
+        <form action="http://localhost:9001/capmovie/@movie.id/update-title">
+            <button id="update" class="govuk-button" data-module="govuk-button">Update</button>
+        </form>
+
+        }
     </div>
 </div>
 }

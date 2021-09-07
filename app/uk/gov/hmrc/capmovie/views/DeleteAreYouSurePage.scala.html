@@ -1,0 +1,11 @@
+@import uk.gov.hmrc.capmovie.models.Movie
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@this(layout: Layout, govukInput : GovukInput, govukErrorSummary : GovukErrorSummary)
+@(movie: Movie, user: String)(implicit request: Request[_], messages: Messages)
+@layout(pageTitle = Some(movie.title + " Delete"), userType = user) {
+<p>Are you sure you want to delete @movie.title</p>
+<a href="http://localhost:9001/capmovie/movie/@movie.id">Cancel and return</a>
+<form action="http://localhost:9001/capmovie/delete/confirmed/@movie.id">
+    <button id="confirm" class="govuk-button" data-module="govuk-button">Delete</button>
+</form>
+}
