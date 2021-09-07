@@ -11,6 +11,16 @@ GET        /start                           uk.gov.hmrc.capmovie.controllers.Hom
 
 GET        /movie/:id                       uk.gov.hmrc.capmovie.controllers.ViewOneController.viewOnePage(id: String)
 
+GET        /login                           uk.gov.hmrc.capmovie.controllers.LoginController.getLoginPage
++nocsrf
+POST       /login                           uk.gov.hmrc.capmovie.controllers.LoginController.submitLogin
+
+GET        /logout                          uk.gov.hmrc.capmovie.controllers.LoginController.logout()
+
+GET        /delete/:id                      uk.gov.hmrc.capmovie.controllers.DeleteController.deleteAreYouSure(id: String)
+
+GET        /delete/confirmed/:id            uk.gov.hmrc.capmovie.controllers.DeleteController.deleteConfirmation(id: String)
+
 GET        /delete/:id                      uk.gov.hmrc.capmovie.controllers.DeleteController.deleteAreYouSure(id: String)
 
 GET        /delete/confirmed/:id            uk.gov.hmrc.capmovie.controllers.DeleteController.deleteConfirmation(id: String)

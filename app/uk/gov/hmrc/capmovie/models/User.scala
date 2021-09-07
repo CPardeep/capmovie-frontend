@@ -14,8 +14,27 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.capmovie
+package uk.gov.hmrc.capmovie.models
 
-package object controllers {
+import play.api.data.Form
+import play.api.data.Forms.{mapping, nonEmptyText}
+import play.api.libs.json.{Json, OFormat}
 
+case class User(id: String,
+                password: String)
+
+object User {
+  implicit val format: OFormat[User] = Json.format[User]
 }
+
+object loginForm {
+  val form: Form[User] =
+    Form(
+      mapping(
+        "id" -> nonEmptyText,
+        "password" -> nonEmptyText
+      )(User.apply)(User.unapply)
+    )
+}
+
+
