@@ -20,7 +20,6 @@ import play.api.libs.json.{JsArray, JsError, JsSuccess}
 import play.api.libs.ws.WSClient
 import play.api.mvc.{AbstractController, ControllerComponents}
 import uk.gov.hmrc.capmovie.models.Movie
-
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
