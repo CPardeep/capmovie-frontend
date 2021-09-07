@@ -5,35 +5,31 @@
 @layout(pageTitle = Some(movie.title), userType = user) {
 <div id="movie-container">
     <div class="movie-card">
-        <p id="title">@movie.title</p>
+        <p id="title" class="govuk-heading-xl">@movie.title</p>
         <img width="150" height="250" src=@movie.poster/>
-        <p id="rated">Rated: <br>
+        <p id="rated" class="govuk-body"><strong>Rated:</strong> <br>
             @movie.rated
         </p>
 
-        <p id="plot">Plot: <br>
+        <p id="plot" class="govuk-body"><Strong>Plot:</Strong> <br>
             @movie.plot
         </p>
 
-        <p>Cast: <br>
+        <p class="govuk-body"><strong>Cast:</Strong> <br>
             @for(actor <- movie.cast) {
-                <p>@actor<p>
+                <p class="govuk-body">@actor<p>
             }
         </p>
 
-        <p>Genres: <br>
+        <p class="govuk-body"><strong>Genres:</strong> <br>
             @for(genre <- movie.genres) {
-                <p>@genre<p>
+                <p class="govuk-body">@genre<p>
             }
         </p>
         @if(user == "admin") {
-        <form action="http://localhost:9001/capmovie/delete/@movie.id">
-            <button id="delete" class="govuk-button" data-module="govuk-button">Delete</button>
-        </form>
-        <form action="http://localhost:9001/capmovie/@movie.id/update-title">
-            <button id="update" class="govuk-button" data-module="govuk-button">Update</button>
-        </form>
-
+        <a href="http://localhost:9001/capmovie/delete/@movie.id" class="govuk-body">Delete</a>
+        <br><br>
+        <a href="http://localhost:9001/capmovie/@movie.id/update-title" class="govuk-body">Update</a>
         }
     </div>
 </div>

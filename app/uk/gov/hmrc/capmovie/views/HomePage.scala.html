@@ -3,12 +3,15 @@
 @this(layout: Layout, govukInput : GovukInput, govukErrorSummary : GovukErrorSummary)
 @(movieList: List[Movie], user: String )(implicit request: Request[_], messages: Messages)
 @layout(pageTitle = Some("Home Page"), userType = user) {
-<div id="movie-container">
+<h1 class="govuk-heading-xl" id="home">Movie List</h1>
+<div id="movie-container" class="govuk-grid-column-full">
+    <div class="govuk-grid-row">
     @for((movie, index) <- movieList.zipWithIndex){
-    <div class="movie-card">
-        <p><a id="movie[@index]" class="movie-link" href="http://localhost:9001/capmovie/movie/@movie.id">@movie.title</a></p>
-        <img width=150 height=250 src="@movie.poster"/>
-    </div>
+        <div class=" movie-card govuk-grid-column-one-third">
+            <p><a id="movie[@index]" class="movie-link govuk-body" href="http://localhost:9001/capmovie/movie/@movie.id">@movie.title</a></p>
+            <img width=150 height=250 src="@movie.poster"/>
+        </div>
     }
+    </div>
 </div>
 }

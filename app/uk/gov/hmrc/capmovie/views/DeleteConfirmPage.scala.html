@@ -3,8 +3,9 @@
 @this(layout: Layout, govukInput : GovukInput, govukErrorSummary : GovukErrorSummary)
 @(user: String)(implicit request: Request[_], messages: Messages)
 @layout(pageTitle = Some("Delete Successful"), userType = user) {
-<p>Delete was successful</p>
+<p id="title" class="govuk-heading-xl">Delete Successful</p>
+<p class="govuk-hint">Movie deleted successfully, press continue to return</p>
 <form action="http://localhost:9001/capmovie/home">
-    <button id="confirm" class="govuk-button" data-module="govuk-button">Confirm</button>
+    <button id="confirm" class="govuk-button" data-module="govuk-button">Continue</button>
 </form>
 }
