@@ -27,7 +27,7 @@
             }
         </p>
         @if(user == "admin") {
-        <a href="http://localhost:9001/capmovie/delete/@movie.id" class="govuk-body">Delete</a>
+        <a id="delete" href="http://localhost:9001/capmovie/delete/@movie.id" class="govuk-body">Delete</a>
         <br><br>
         <a href="http://localhost:9001/capmovie/@movie.id/update-title" class="govuk-body">Update</a>
         }
