@@ -1,0 +1,61 @@
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@import uk.gov.hmrc.capmovie.models.RatingReg
+@this(layout: Layout, govukRadios : GovukRadios, govukErrorSummary : GovukErrorSummary)
+@(form: Form[RatingReg], movieId: String, user: String)(implicit request: Request[_], messages: Messages)
+@layout(pageTitle = Some("Movie Review"), userType = user){
+
+@if(form.errors.nonEmpty){
+@defining(form.errors.map { error =>
+ErrorLink(href = Some(s"#${error.key}"), content = Text(messages(error.message, error.args:_*)))}) { errorLinks =>
+@govukErrorSummary(ErrorSummary(
+errorList = errorLinks,
+title = Text(messages("Please select the age rating of the film"))))
+}
+}
+
+@helper.form(action = uk.gov.hmrc.capmovie.controllers.routes.ReviewController.submitRating(movieId)){
+<div class="govuk-form-group">
+    @govukRadios(Radios(
+    fieldset = Some(Fieldset(
+    legend = Some(Legend(
+    content = Text("What do you rate the movie?"),
+    classes = "govuk-fieldset__legend--l",
+    isPageHeading = true
+    ))
+    )),
+    hint = Some(Hint(
+    content = Text("Select the rating which represents the movie, this will count towards calculating the average rating.")
+    )),
+    idPrefix = Some("rating"),
+    name = "rating",
+    items = Seq(
+    RadioItem(
+    content = Text("1"),
+    value = Some("1"),
+    ),
+    RadioItem(
+    content = Text("2"),
+    value = Some("2"),
+    ),
+    RadioItem(
+    content = Text("3"),
+    value = Some("3"),
+    ),
+    RadioItem(
+    content = Text("4"),
+    value = Some("4"),
+    ),
+    RadioItem(
+    content = Text("5"),
+    value = Some("5"),
+    )
+    )
+    ))
+    <br>
+    <button id="next-button" class="govuk-button" data-module="govuk-button">
+        Continue
+    </button>
+</div>
+}
+}
+

@@ -30,6 +30,9 @@
         <a id="delete" href="http://localhost:9001/capmovie/delete/@movie.id" class="govuk-body">Delete</a>
         <br><br>
         <a id="update" href="http://localhost:9000/capmovie/update/@movie.id/title" class="govuk-body">Update</a>
+        } else { @if(user == "user") {
+        <a id="add-review" href="@uk.gov.hmrc.capmovie.controllers.routes.ReviewController.getRating(movie.id)" class="govuk-body">Leave a review and rating</a>
+        }
         }
     </div>
 </div>

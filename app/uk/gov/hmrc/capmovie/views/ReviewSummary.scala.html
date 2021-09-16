@@ -1,0 +1,44 @@
+@import uk.gov.hmrc.capmovie.models.Review
+@import helper._
+@import uk.gov.hmrc.govukfrontend.views.html.components._
+@this(layout: Layout, govukSummaryList : GovukSummaryList)
+@(review: Review, userId: String, movieId: String, user: String)(implicit request: Request[_], messages: Messages)
+@layout(pageTitle = Some("Review Summary")) {
+
+<h1 class="govuk-heading-xl">Please check the details you have entered before you submit the movie</h1>
+<div id="with-hint-hint" class="govuk-hint">
+    Below are the details you entered. If these are correct press submit to continue or change to alter details.
+</div>
+@govukSummaryList(SummaryList(
+rows = Seq(
+SummaryListRow(
+key = Key(
+content = Text("Rating")
+),
+value = Value(
+content = Text(review.rating.toString)
+),
+actions = Some(Actions(
+items = Seq(
+)
+))
+),
+SummaryListRow(
+key = Key(
+content = Text("Review")
+),
+value = Value(
+content = Text(review.review)
+),
+actions = Some(Actions(
+items = Seq(
+)
+))
+)
+)
+))
+<form action="@uk.gov.hmrc.capmovie.controllers.routes.ReviewController.submit(movieId)">
+    <button id="next-button" class="govuk-button" data-module="govuk-button">Submit</button>
+</form>
+
+}

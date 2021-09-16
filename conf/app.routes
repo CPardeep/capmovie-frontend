@@ -24,3 +24,15 @@ GET        /delete/confirmed/:id            uk.gov.hmrc.capmovie.controllers.Del
 GET        /delete/:id                      uk.gov.hmrc.capmovie.controllers.DeleteController.deleteAreYouSure(id: String)
 
 GET        /delete/confirmed/:id            uk.gov.hmrc.capmovie.controllers.DeleteController.deleteConfirmation(id: String)
+
+GET        /movie/:id/create/rating         uk.gov.hmrc.capmovie.controllers.ReviewController.getRating(id: String)
++nocsrf
+POST       /movie/:id/create/rating         uk.gov.hmrc.capmovie.controllers.ReviewController.submitRating(id: String)
+
+GET        /movie/:id/create/review         uk.gov.hmrc.capmovie.controllers.ReviewController.getReview(id: String)
++nocsrf
+POST       /movie/:id/create/review         uk.gov.hmrc.capmovie.controllers.ReviewController.submitReview(id: String)
+
+GET        /movie/:id/create/review/summary uk.gov.hmrc.capmovie.controllers.ReviewController.getSummary(id: String)
+
+GET        /movie/:id/create/review/sudmit  uk.gov.hmrc.capmovie.controllers.ReviewController.submit(id: String)

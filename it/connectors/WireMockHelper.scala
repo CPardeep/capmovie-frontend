@@ -83,4 +83,13 @@ trait WireMockHelper extends Eventually with IntegrationPatience {
           withBody(responseBody)
       )
     )
+
+  def stubPatch(url: String, status: Integer, responseBody: String): StubMapping =
+    stubFor(patch(urlMatching(url))
+      .willReturn(
+        aResponse()
+          .withStatus(status)
+          .withBody(responseBody)
+      )
+    )
 }

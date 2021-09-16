@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.capmovie.controllers.predicates
+package uk.gov.hmrc.capmovie.connectors
 
-import play.api.mvc.{AnyContent, MessagesControllerComponents, MessagesRequest, Result}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import play.api.libs.json.Json
+import play.api.libs.ws.WSClient
+import play.api.mvc.{AbstractController, ControllerComponents}
+import uk.gov.hmrc.capmovie.models.Review
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{Failure, Success, Try}
 
-class CheckUser @Inject()(mcc: MessagesControllerComponents) extends FrontendController(mcc) {
+class ReviewConnector @Inject()(ws: WSClient, cc: ControllerComponents) extends AbstractController(cc) {
 
-  def check(func: String => Future[Result])(implicit request: MessagesRequest[AnyContent]): Future[Result] = {
-    Try {
-      request.session.get("adminId").get
-    } match {
-      case Success(value) => func(value)
-      case Failure(_) => func("")
+  def create(userId: String, movieId: String, review: Review): Future[Boolean] = {
+    ws.url(s"http://localhost:9009/movie/$movieId/user/$userId/review").patch(Json.toJson(review)).map {
+      _.status match {
+        case CREATED => true
+        case _ => false
+      }
     }
   }
-
 
 }

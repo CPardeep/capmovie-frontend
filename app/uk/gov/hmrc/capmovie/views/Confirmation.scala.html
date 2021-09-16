@@ -1,0 +1,31 @@
+@this(layout: Layout, govukButton: GovukButton)
+
+@(user: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = Some("Add a Review Success"), userType = user) {
+
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                Successful
+            </h1>
+            <div class="govuk-panel__body">
+                Review added
+            </div>
+        </div>
+        <h2 class="govuk-heading-m">What happens next</h2>
+
+        <p class="govuk-body">You have now added a review.</p>
+        <p class="govuk-body">The review will appear on the review page for the movie.</p>
+
+
+        <a id="all-review" class="govuk-button" href=""> See all reviews </a>
+        <br>
+        <a id="home-page" class="govuk-button" href="@uk.gov.hmrc.capmovie.controllers.routes.HomeController.homePage()"> Go back to home page</a>
+
+    </main>
+</div>
+
+}
