@@ -48,7 +48,8 @@ class MovieConnectorISpec extends AnyWordSpec with Matchers with GuiceOneServerP
       "testPerson",
       "TestPerson"),
     poster = "testURL",
-    title = "testTitle")
+    title = "testTitle",
+    avgRating = 0.0)
 
   val movieList = List(movie, movie.copy(id = "TESTMOV2"))
 

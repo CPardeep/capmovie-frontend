@@ -39,6 +39,7 @@ class MovieConnector @Inject()(ws: WSClient, cc: ControllerComponents)
             (response \ "cast").as[List[String]],
             (response \ "poster").as[String],
             (response \ "title").as[String],
+            (response \ "avgRating").as[Double]
           )).toList
           case _ => List()
         }

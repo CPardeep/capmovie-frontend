@@ -50,7 +50,8 @@ class ViewOneControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
       "testPerson",
       "TestPerson"),
     poster = "testURL",
-    title = "testTitle")
+    title = "testTitle",
+    avgRating = 0.0)
 
   "viewOnePage" should {
     "load a movie" in {
