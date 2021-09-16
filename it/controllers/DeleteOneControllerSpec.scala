@@ -56,7 +56,9 @@ class DeleteOneControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
       "testPerson",
       "TestPerson"),
     poster = "testURL",
-    title = "testTitle")
+    title = "testTitle",
+    avgRating = 0.0)
+
   "deleteAreYouSure" should {
     "load a page" in {
       when(connector.readOne(any()))

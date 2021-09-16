@@ -32,7 +32,9 @@ class MovieSpec extends AnyWordSpec with Matchers {
       "testPerson",
       "TestPerson"),
     poster = "testURL",
-    title = "testTitle")
+    title = "testTitle",
+    avgRating = 0.0)
+
   val movieJson: JsValue = Json.parse(
     s"""{
        |    "id" : "${movie.id}",
@@ -47,7 +49,8 @@ class MovieSpec extends AnyWordSpec with Matchers {
        |       "${movie.cast(1)}"
        |    ],
        |    "poster" : "${movie.poster}",
-       |    "title" : "${movie.title}"
+       |    "title" : "${movie.title}",
+       |    "avgRating" : ${movie.avgRating}
        |}
        |""".stripMargin)
 
