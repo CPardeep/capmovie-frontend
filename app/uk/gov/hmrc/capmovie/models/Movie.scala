@@ -25,8 +25,18 @@ case class Movie(id: String,
                  cast: List[String],
                  poster: String,
                  title: String,
-                 avgRating: Double)
+                 reviews: List[Review]
+                 )
 
 object Movie {
   implicit val format: OFormat[Movie] = Json.format[Movie]
+}
+
+case class MovieWithAvgRating(
+                             movie: Movie,
+                             avgRating: Double
+                             )
+
+object MovieWithAvgRating {
+  implicit val format: OFormat[MovieWithAvgRating] = Json.format[MovieWithAvgRating]
 }

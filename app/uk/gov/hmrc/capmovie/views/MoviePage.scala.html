@@ -1,74 +1,40 @@
-@import uk.gov.hmrc.capmovie.models.Movie
+@import uk.gov.hmrc.capmovie.models.MovieWithAvgRating
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 @this(layout: Layout, govukInput : GovukInput, govukErrorSummary : GovukErrorSummary)
-@(movie: Movie, user: String)(implicit request: Request[_], messages: Messages)
-@layout(pageTitle = Some(movie.title), userType = user) {
+@(movie: MovieWithAvgRating, user: String)(implicit request: Request[_], messages: Messages)
+@layout(pageTitle = Some(movie.movie.title), userType = user) {
+<div id="movie-container">
+    <div class="movie-card">
+        <p id="title" class="govuk-heading-xl">@movie.movie.title</p>
+        <img width="150" height="250" src=@movie.movie.poster/>
+        <p id="rated" class="govuk-body"><strong>Rated:</strong> <br>
+            @movie.movie.rated
+        </p>
 
-<h1 class="govuk-heading-l">@movie.title</h1>
-<div class="movie-card">
-    <img width="150" height="250" src=@movie.poster/>
-    <dl class="govuk-summary-list">
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Title
-            </dt>
-            <dd id="title" class="govuk-summary-list__value">
-                @movie.title
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Rated
-            </dt>
-            <dd id="rated" class="govuk-summary-list__value">
-                @movie.rated
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Plot
-            </dt>
-            <dd id="plot" class="govuk-summary-list__value">
-                @movie.plot
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Cast
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @for(actor <- movie.cast) {
-                <p class="govuk-body">@actor</p>
-                }
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Genre
-            </dt>
-            <dd class="govuk-summary-list__value">
-                @for(genre <- movie.genres) {
-                <p class="govuk-body">@genre</p>
-                }
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">
-                Average User Rating
-            </dt>
-            <dd id="avg-rating" class="govuk-summary-list__value">
-                @if(movie.avgRating != 0) {
-                @movie.avgRating
-                } else {
-                -
-                }
-            </dd>
-        </div>
-    </dl>
-    @if(user == "admin") {
-    <a id="update" class="govuk-link govuk-body" href="http://localhost:9000/capmovie/update/@movie.id/title">Update</a>
-    <br><br>
-    <a id="delete" class="govuk-body govuk-link" href="http://localhost:9001/capmovie/delete/@movie.id">Delete</a>
-    }
+        <p id="plot" class="govuk-body"><Strong>Plot:</Strong> <br>
+            @movie.movie.plot
+        </p>
+
+        <p id="avg" class="govuk-body"><Strong>Avg:</Strong> <br>
+            @movie.avgRating
+        </p>
+
+        <p class="govuk-body"><strong>Cast:</Strong> <br>
+            @for(actor <- movie.movie.cast) {
+        <p class="govuk-body">@actor<p>
+        }
+    </p>
+
+        <p class="govuk-body"><strong>Genres:</strong> <br>
+            @for(genre <- movie.movie.genres) {
+        <p class="govuk-body">@genre<p>
+        }
+    </p>
+        @if(user == "admin") {
+        <a id="delete" href="http://localhost:9001/capmovie/delete/@movie.movie.id" class="govuk-body">Delete</a>
+        <br><br>
+        <a id="update" href="http://localhost:9000/capmovie/update/@movie.movie.id/title" class="govuk-body">Update</a>
+        }
+    </div>
 </div>
 }

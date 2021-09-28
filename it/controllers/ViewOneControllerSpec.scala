@@ -28,7 +28,7 @@ import play.api.test.{FakeRequest, Helpers}
 import uk.gov.hmrc.capmovie.connectors.MovieConnector
 import uk.gov.hmrc.capmovie.controllers.ViewOneController
 import uk.gov.hmrc.capmovie.controllers.predicates.CheckUser
-import uk.gov.hmrc.capmovie.models.Movie
+import uk.gov.hmrc.capmovie.models.{Movie, MovieWithAvgRating}
 import uk.gov.hmrc.capmovie.views.html.MoviePage
 
 import scala.concurrent.Future
@@ -51,12 +51,16 @@ class ViewOneControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPe
       "TestPerson"),
     poster = "testURL",
     title = "testTitle",
-    avgRating = 0.0)
-
+    reviews = List()
+    )
+  val movieWithAvgRating: MovieWithAvgRating = MovieWithAvgRating(
+    movie = movie,
+    avgRating = 0.0
+  )
   "viewOnePage" should {
     "load a movie" in {
       when(connector.readOne(any()))
-        .thenReturn(Future.successful(Some(movie)))
+        .thenReturn(Future.successful(Some(movieWithAvgRating)))
       val result = controller.viewOnePage(movie.id).apply(FakeRequest("GET", "/"))
       status(result) shouldBe OK
     }
