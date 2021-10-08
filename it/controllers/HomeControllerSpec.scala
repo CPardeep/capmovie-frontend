@@ -53,7 +53,8 @@ class HomeControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSu
       "TestPerson"),
     poster = "testURL",
     title = "testTitle",
-    avgRating = 0.0)
+    reviews = List()
+    )
 
   "homePage" should {
     "load movieList with standard navbar" in {

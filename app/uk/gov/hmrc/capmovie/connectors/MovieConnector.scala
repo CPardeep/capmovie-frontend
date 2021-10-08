@@ -19,7 +19,8 @@ package uk.gov.hmrc.capmovie.connectors
 import play.api.libs.json.{JsArray, JsError, JsSuccess}
 import play.api.libs.ws.WSClient
 import play.api.mvc.{AbstractController, ControllerComponents}
-import uk.gov.hmrc.capmovie.models.Movie
+import uk.gov.hmrc.capmovie.models.{Movie, MovieWithAvgRating, Review}
+
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,17 +40,17 @@ class MovieConnector @Inject()(ws: WSClient, cc: ControllerComponents)
             (response \ "cast").as[List[String]],
             (response \ "poster").as[String],
             (response \ "title").as[String],
-            (response \ "avgRating").as[Double]
+            (response \ "reviews").as[List[Review]]
           )).toList
           case _ => List()
         }
     }.recover { case _ => List() }
   }
 
-  def readOne(id: String): Future[Option[Movie]] = {
+  def readOne(id: String): Future[Option[MovieWithAvgRating]] = {
     ws.url("http://localhost:9009/movie/" + id).get().map { response =>
       response.status match {
-        case 200 => response.json.validate[Movie] match {
+        case 200 => response.json.validate[MovieWithAvgRating] match {
           case JsSuccess(movie, _) => Some(movie)
           case JsError(_) => None
         }
@@ -58,6 +59,7 @@ class MovieConnector @Inject()(ws: WSClient, cc: ControllerComponents)
 
     }
   }
+
   def delete(id: String): Future[Boolean] = {
     ws.url("http://localhost:9009/delete/" + id).delete().map { response =>
       response.status match {

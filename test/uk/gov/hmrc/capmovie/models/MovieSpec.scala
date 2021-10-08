@@ -18,7 +18,7 @@ package uk.gov.hmrc.capmovie.models
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.libs.json.{JsSuccess, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 
 class MovieSpec extends AnyWordSpec with Matchers {
   val movie: Movie = Movie(
@@ -33,7 +33,8 @@ class MovieSpec extends AnyWordSpec with Matchers {
       "TestPerson"),
     poster = "testURL",
     title = "testTitle",
-    avgRating = 0.0)
+    reviews = List()
+  )
 
   val movieJson: JsValue = Json.parse(
     s"""{
@@ -50,17 +51,18 @@ class MovieSpec extends AnyWordSpec with Matchers {
        |    ],
        |    "poster" : "${movie.poster}",
        |    "title" : "${movie.title}",
-       |    "avgRating" : ${movie.avgRating}
+       |    "reviews" : []
+       |
        |}
        |""".stripMargin)
 
   "Movie" can {
     "OFormat" should {
       "convert object to json" in {
-        Json.toJson(movie).toString shouldBe movieJson.toString
+        Json.toJson(movie) shouldBe movieJson
       }
       "convert json to object" in {
-        Json.fromJson[Movie](movieJson).get.toString shouldBe JsSuccess(movie).get.toString
+        Json.fromJson[Movie](movieJson).get shouldBe movie
       }
     }
   }

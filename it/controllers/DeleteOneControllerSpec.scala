@@ -28,7 +28,7 @@ import play.api.test.{FakeRequest, Helpers}
 import uk.gov.hmrc.capmovie.connectors.MovieConnector
 import uk.gov.hmrc.capmovie.controllers.DeleteController
 import uk.gov.hmrc.capmovie.controllers.predicates.CheckUser
-import uk.gov.hmrc.capmovie.models.Movie
+import uk.gov.hmrc.capmovie.models.{Movie, MovieWithAvgRating}
 import uk.gov.hmrc.capmovie.views.html.{DeleteAreYouSurePage, DeleteConfirmPage}
 
 import scala.concurrent.Future
@@ -57,12 +57,17 @@ class DeleteOneControllerSpec extends AnyWordSpec with Matchers with GuiceOneApp
       "TestPerson"),
     poster = "testURL",
     title = "testTitle",
-    avgRating = 0.0)
+    reviews = List()
+    )
+  val movieWithAvgRating: MovieWithAvgRating = MovieWithAvgRating(
+    movie = movie,
+    avgRating = 0.0
+  )
 
   "deleteAreYouSure" should {
     "load a page" in {
       when(connector.readOne(any()))
-        .thenReturn(Future.successful(Some(movie)))
+        .thenReturn(Future.successful(Some(movieWithAvgRating)))
       val result = controller.deleteAreYouSure(movie.id).apply(FakeRequest("GET", "/").withSession("adminId" -> "ADMIN"))
       status(result) shouldBe OK
     }

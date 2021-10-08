@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.capmovie.controllers
 
-import play.api.mvc.MessagesControllerComponents
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.capmovie.connectors.MovieConnector
 import uk.gov.hmrc.capmovie.controllers.predicates.CheckUser
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -27,20 +27,25 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DeleteController @Inject()(mcc: MessagesControllerComponents,
-                                deletePage: DeleteAreYouSurePage,
+                                 deletePage: DeleteAreYouSurePage,
                                  deleteConfirm: DeleteConfirmPage,
-                                connector: MovieConnector,
+                                 connector: MovieConnector,
                                  check: CheckUser
                                 )
-  extends FrontendController(mcc){
+  extends FrontendController(mcc) {
 
-  def deleteAreYouSure(id: String) = Action async { implicit request =>
+  def deleteAreYouSure(id: String): Action[AnyContent] = Action async { implicit request =>
     check.check {
-      case a if a.contains("ADMIN") => connector.readOne(id).map(movie => Ok(deletePage(movie.get, "admin")))
+      case a if a.contains("ADMIN") => connector.readOne(id).map {
+        case Some(movieWithAvgRating) =>
+          Ok(deletePage(movieWithAvgRating.movie, "admin"))
+        case None => Redirect(routes.HomeController.homePage())
+      }
       case _ => Future(Redirect(routes.HomeController.homePage()))
     }
   }
-  def deleteConfirmation(id: String) = Action async { implicit request =>
+
+  def deleteConfirmation(id: String): Action[AnyContent] = Action async { implicit request =>
     check.check {
       case a if a.contains("ADMIN") => connector.delete(id).map {
         case true => Ok(deleteConfirm("admin"))
