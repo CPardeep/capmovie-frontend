@@ -33,10 +33,10 @@ class ViewOneController @Inject()(mcc: MessagesControllerComponents,
   extends FrontendController(mcc) {
 
   def viewOnePage(id: String): Action[AnyContent] = Action async { implicit request =>
-      check.check {
-        case a if a.contains("ADMIN") => connector.readOne(id).map( movie => Ok(moviePage(movie.get, "admin")))
-        case a if a.contains("USER") => connector.readOne(id).map( movie =>Ok(moviePage(movie.get, "user")))
-        case _ => connector.readOne(id).map( movie =>Ok(moviePage(movie.get, "")))
-      }
+    check.check {
+      case a if a.contains("ADMIN") => connector.readOne(id).map(movie => Ok(moviePage(movie.get, "admin")))
+      case a if a.contains("USER") => connector.readOne(id).map(movie => Ok(moviePage(movie.get, "user")))
+      case _ => connector.readOne(id).map(movie => Ok(moviePage(movie.get, "")))
     }
+  }
 }
