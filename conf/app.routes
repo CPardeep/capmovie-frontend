@@ -11,6 +11,8 @@ GET        /start                           uk.gov.hmrc.capmovie.controllers.Hom
 
 GET        /movie/:id                       uk.gov.hmrc.capmovie.controllers.ViewOneController.viewOnePage(id: String)
 
+GET        /reviews/:id                     uk.gov.hmrc.capmovie.controllers.MovieRatingsController.movieRatingsPage(id: String)
+
 GET        /login                           uk.gov.hmrc.capmovie.controllers.LoginController.getLoginPage
 +nocsrf
 POST       /login                           uk.gov.hmrc.capmovie.controllers.LoginController.submitLogin
